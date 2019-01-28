@@ -49,6 +49,11 @@ def updating_list():
 def choose_next_person(event=None, update_status='', next_name='', file_names=[], file_dates=[], _index=0, display_names=[], display_dates=[], filename=''):
     if not updating_list():
         update_status.set('update')
+        for index in range(4):
+            if all_update_statuses[index].get() == 'update':
+                all_buttons_text[index].set('select')
+            else:
+                all_buttons_text[index].set('')
         next_name.set(file_names[0])
     elif update_status.get() == 'update':
         next_name.set('')
@@ -65,6 +70,8 @@ def choose_next_person(event=None, update_status='', next_name='', file_names=[]
             names_file.write(str(file_names[index]) + ',' + str(file_dates[index]) + '\n')
         names_file.close()
         update_status.set('initial')
+        for index in range(4):
+            all_buttons_text[index].set('choose next')
         
 def next_name(event):
     if list_update_status.get() == 'update' and list_index.get() < class_size.get()-1:
@@ -108,10 +115,8 @@ classes = ['Monday_4', 'Thursday_4']
 class_ref = classes[class_index]
 
 header_font = font.Font(family='comic sans ms', size=60, weight='bold')
-button_font = font.Font(family='comic sans ms', size=20, weight='bold')
 title_font = font.Font(family='comic sans ms', size=28, weight='bold')
-info_font = font.Font(family='comic sans ms', size=22, weight='bold')
-next_font = font.Font(family='comic sans ms', size=20, weight='bold')
+general_font = font.Font(family='comic sans ms', size=22, weight='bold')
 
 header = Label(window, text="Class Jobs", bg='#ffd166', fg='#ef476f', width='40', height='2', font=header_font).pack()
 Label(window, height=7).pack()
@@ -123,12 +128,22 @@ buttons.pack()
 next_name_display = Frame(footer_frame)
 next_name_display.pack()
 
+button_1_text = StringVar()
+button_1_text.set('choose next')
+button_2_text = StringVar()
+button_2_text.set('choose next')
+button_3_text = StringVar()
+button_3_text.set('choose next')
+button_4_text = StringVar()
+button_4_text.set('choose next')
+all_buttons_text = [button_1_text, button_2_text, button_3_text, button_4_text]
+
 list_update_status = StringVar()
 list_update_status.set('initial')
 list_next_name = StringVar()
 list_index = IntVar()
 list_index.set(0)
-list_button = Label(buttons, text='choose next', font=button_font, bg='#a69658', fg='#fff480', width=12, bd=4, relief='raised')
+list_button = Label(buttons, textvariable=button_1_text, font=general_font, bg='#a69658', fg='#fff480', width=12, bd=4, relief='raised')
 list_button.pack(side=LEFT)
 list_button.bind("<Button-1>", lambda event: choose_next_person(event,
 update_status=list_update_status,
@@ -139,17 +154,17 @@ _index=list_index,
 display_names=display_names_1,
 display_dates=display_dates_1,
 filename='list.txt'))
-list_next_display = Label(next_name_display, textvariable=list_next_name, width=12, font=next_font, pady=15, fg='#f0386b').pack(side=LEFT)
+list_next_display = Label(next_name_display, textvariable=list_next_name, width=12, font=general_font, pady=10, fg='#f0386b', bd=4, relief='flat').pack(side=LEFT)
 
-Label(buttons, width=25).pack(side=LEFT)
-Label(next_name_display, width=25).pack(side=LEFT)
+Label(buttons, width=23).pack(side=LEFT)
+Label(next_name_display, width=23).pack(side=LEFT)
 
 jasper_update_status = StringVar()
 jasper_update_status.set('initial')
 jasper_next_name = StringVar()
 jasper_index = IntVar()
 jasper_index.set(0)
-jasper_button = Label(buttons, text='choose next', font=button_font, bg='#a69658', fg='#fff480', width=12, bd=4, relief='raised')
+jasper_button = Label(buttons, textvariable=button_2_text, font=general_font, bg='#a69658', fg='#fff480', width=12, bd=4, relief='raised')
 jasper_button.pack(side=LEFT)
 jasper_button.bind("<Button-1>", lambda event: choose_next_person(event,
 update_status=jasper_update_status,
@@ -160,17 +175,17 @@ _index=jasper_index,
 display_names=display_names_2,
 display_dates=display_dates_2,
 filename='jasper.txt'))
-jasper_next_display = Label(next_name_display, textvariable=jasper_next_name, width=12, font=next_font, pady=15, fg='#f0386b').pack(side=LEFT)
+jasper_next_display = Label(next_name_display, textvariable=jasper_next_name, width=12, font=general_font, pady=10, fg='#f0386b', bd=4, relief='flat').pack(side=LEFT)
 
-Label(buttons, width=25).pack(side=LEFT)
-Label(next_name_display, width=25).pack(side=LEFT)
+Label(buttons, width=23).pack(side=LEFT)
+Label(next_name_display, width=23).pack(side=LEFT)
 
 computer_update_status = StringVar()
 computer_update_status.set('initial')
 computer_next_name = StringVar()
 computer_index = IntVar()
 computer_index.set(0)
-computer_button = Label(buttons, text='choose next', font=button_font, bg='#a69658', fg='#fff480', width=12, bd=4, relief='raised')
+computer_button = Label(buttons, textvariable=button_3_text, font=general_font, bg='#a69658', fg='#fff480', width=12, bd=4, relief='raised')
 computer_button.pack(side=LEFT)
 computer_button.bind("<Button-1>", lambda event: choose_next_person(event,
 update_status=computer_update_status,
@@ -181,17 +196,17 @@ _index=computer_index,
 display_names=display_names_3,
 display_dates=display_dates_3,
 filename='computer.txt'))
-computer_next_display = Label(next_name_display, textvariable=computer_next_name, width=12, font=next_font, pady=15, fg='#f0386b').pack(side=LEFT)
+computer_next_display = Label(next_name_display, textvariable=computer_next_name, width=12, font=general_font, pady=10, fg='#f0386b', bd=4, relief='flat').pack(side=LEFT)
 
-Label(buttons, width=25).pack(side=LEFT)
-Label(next_name_display, width=25).pack(side=LEFT)
+Label(buttons, width=23).pack(side=LEFT)
+Label(next_name_display, width=23).pack(side=LEFT)
 
 whiteboard_update_status = StringVar()
 whiteboard_update_status.set('initial')
 whiteboard_next_name = StringVar()
 whiteboard_index = IntVar()
 whiteboard_index.set(0)
-whiteboard_button = Label(buttons, text='choose next', font=button_font, bg='#a69658', fg='#fff480', width=12, bd=4, relief='raised')
+whiteboard_button = Label(buttons, textvariable=button_4_text, font=general_font, bg='#a69658', fg='#fff480', width=12, bd=4, relief='raised')
 whiteboard_button.pack(side=LEFT)
 whiteboard_button.bind("<Button-1>", lambda event: choose_next_person(event,
 update_status=whiteboard_update_status,
@@ -202,7 +217,10 @@ _index=whiteboard_index,
 display_names=display_names_4,
 display_dates=display_dates_4,
 filename='whiteboard.txt'))
-whiteboard_next_display = Label(next_name_display, textvariable=whiteboard_next_name, width=12, font=next_font, pady=15, fg='#f0386b').pack(side=LEFT)
+whiteboard_next_display = Label(next_name_display, textvariable=whiteboard_next_name, width=12, font=general_font, pady=10, fg='#f0386b', bd=4, relief='flat').pack(side=LEFT)
+
+
+all_update_statuses = [list_update_status, jasper_update_status, computer_update_status, whiteboard_update_status]
 
 window.bind("<Down>", next_name)
 window.bind("<Up>", last_name)
@@ -251,9 +269,9 @@ list_1 = [person_1_1, person_2_1, person_3_1, person_4_1, person_5_1, person_6_1
 for index in range(class_size.get()):
     next_person_1 = list_1[index]
     next_person_1.pack(side=TOP, fill=X)
-    Label(next_person_1, textvariable=display_names_1[index], font=info_font, fg='#3066be').pack(side=LEFT)
+    Label(next_person_1, textvariable=display_names_1[index], font=general_font, fg='#3066be').pack(side=LEFT)
     Label(next_person_1, width=5).pack(side=LEFT)
-    Label(next_person_1, textvariable=display_dates_1[index], font=info_font, fg='#009973').pack(side=RIGHT)
+    Label(next_person_1, textvariable=display_dates_1[index], font=general_font, fg='#009973').pack(side=RIGHT)
     
 # -------------------------------------------------------------------------------------------------
 
@@ -299,9 +317,9 @@ list_2 = [person_1_2, person_2_2, person_3_2, person_4_2, person_5_2, person_6_2
 for index in range(class_size.get()):
     next_person_2 = list_2[index]
     next_person_2.pack(side=TOP, fill=X)
-    Label(next_person_2, textvariable=display_names_2[index], font=info_font, fg='#3066be').pack(side=LEFT)
+    Label(next_person_2, textvariable=display_names_2[index], font=general_font, fg='#3066be').pack(side=LEFT)
     Label(next_person_2, width=5).pack(side=LEFT)
-    Label(next_person_2, textvariable=display_dates_2[index], font=info_font, fg='#009973').pack(side=RIGHT)
+    Label(next_person_2, textvariable=display_dates_2[index], font=general_font, fg='#009973').pack(side=RIGHT)
     
 # -------------------------------------------------------------------------------------------------
 
@@ -347,9 +365,9 @@ list_3 = [person_1_3, person_2_3, person_3_3, person_4_3, person_5_3, person_6_3
 for index in range(class_size.get()):
     next_person_3 = list_3[index]
     next_person_3.pack(side=TOP, fill=X)
-    Label(next_person_3, textvariable=display_names_3[index], font=info_font, fg='#3066be').pack(side=LEFT)
+    Label(next_person_3, textvariable=display_names_3[index], font=general_font, fg='#3066be').pack(side=LEFT)
     Label(next_person_3, width=5).pack(side=LEFT)
-    Label(next_person_3, textvariable=display_dates_3[index], font=info_font, fg='#009973').pack(side=RIGHT)
+    Label(next_person_3, textvariable=display_dates_3[index], font=general_font, fg='#009973').pack(side=RIGHT)
     
 # -------------------------------------------------------------------------------------------------
 
@@ -395,9 +413,9 @@ list_4 = [person_1_4, person_2_4, person_3_4, person_4_4, person_5_4, person_6_4
 for index in range(class_size.get()):
     next_person_4 = list_4[index]
     next_person_4.pack(side=TOP, fill=X)
-    Label(next_person_4, textvariable=display_names_4[index], font=info_font, fg='#3066be').pack(side=LEFT)
+    Label(next_person_4, textvariable=display_names_4[index], font=general_font, fg='#3066be').pack(side=LEFT)
     Label(next_person_4, width=5).pack(side=LEFT)
-    Label(next_person_4, textvariable=display_dates_4[index], font=info_font, fg='#009973').pack(side=RIGHT)
+    Label(next_person_4, textvariable=display_dates_4[index], font=general_font, fg='#009973').pack(side=RIGHT)
     
 # -------------------------------------------------------------------------------------------------
 

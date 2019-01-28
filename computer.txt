@@ -1,0 +1,7 @@
+Clara,2019-01-01
+Raquel,2019-01-01
+Maria,2019-01-01
+Cayetana,2019-01-01
+Lara,2019-01-01
+Valeria,2019-01-01
+Natalia,2019-01-28
