@@ -92,6 +92,27 @@ def display_class_lists(event=None, class_index=0):
             whiteboard_index.set(whiteboard_index.get()-1)
             whiteboard_next_name.set(file_whiteboard_names[whiteboard_index.get()])
     
+    def reset_list(event=None, original_names=[], changed_names=[], original_dates=[], changed_dates=[], folder='', filename='', display_names=[], display_dates=[]):
+        if not updating_list():            
+            for index in range(len(original_names)):
+                display_names[index].set(original_names[index])
+                date_elements = original_dates[index].split('-')
+                display_dates[index].set(date_elements[2] + ' ' + months[int(date_elements[1])-1])
+            os.chdir('../job lists/' + folder)         
+            names_file = open(filename, 'w')
+            for index in range(len(original_names)):
+                names_file.write(str(original_names[index]) + ',' + str(original_dates[index]) + '\n')
+                changed_names[index] = original_names[index]
+                changed_dates[index] = original_dates[index]
+            names_file.close()
+            os.chdir('../../jobs')
+            
+    def duplicate_list(list_to_duplicate):
+        new_list = []
+        for item in range(len(list_to_duplicate)):
+            new_list.append(list_to_duplicate[item])
+        return new_list
+    
     def print_lists():
         file_names = ['names list', 'jasper', 'computer', 'whiteboard']
         all_names = [file_list_names, file_jasper_names, file_computer_names, file_whiteboard_names]
@@ -125,8 +146,66 @@ def display_class_lists(event=None, class_index=0):
 
     header = Label(window, text="Class Jobs", bg='#ffd166', fg='#ef476f', width='40', height='2', font=header_font).pack()
     Label(window, height=7).pack()
+    
+    Label(window, height=2).pack(side=BOTTOM)
+    reset_buttons = Frame(window)
+    reset_buttons.pack(side=BOTTOM)
+    
+    undo_button_1 = Label(reset_buttons, text='Undo', bg='#f9f1d2', fg='#f78b6e', font=general_font, width=7, bd=4, relief='raised')
+    undo_button_1.pack(side=LEFT)  
+    undo_button_1.bind("<Button-1>", lambda event: reset_list(event,
+    original_names=restore_list_names,
+    changed_names=file_list_names,
+    original_dates=restore_list_dates,
+    changed_dates=file_list_dates,
+    folder='list',
+    filename=group + '.txt',
+    display_names = display_names_1,
+    display_dates = display_dates_1))
+    
+    Label(reset_buttons, width=31).pack(side=LEFT)
+    
+    undo_button_2 = Label(reset_buttons, text='Undo', bg='#f9f1d2', fg='#f78b6e', font=general_font, width=7, bd=4, relief='raised')
+    undo_button_2.pack(side=LEFT)
+    undo_button_2.bind("<Button-1>", lambda event: reset_list(event,
+    original_names=restore_jasper_names,
+    changed_names=file_jasper_names,
+    original_dates=restore_jasper_dates,
+    changed_dates=file_jasper_dates,
+    folder='jasper',
+    filename=group + '.txt',
+    display_names = display_names_2,
+    display_dates = display_dates_2))
+    
+    Label(reset_buttons, width=31).pack(side=LEFT)
+    
+    undo_button_3 = Label(reset_buttons, text='Undo', bg='#f9f1d2', fg='#f78b6e', font=general_font, width=7, bd=4, relief='raised')
+    undo_button_3.pack(side=LEFT)
+    undo_button_3.bind("<Button-1>", lambda event: reset_list(event,
+    original_names=restore_computer_names,
+    changed_names=file_computer_names,
+    original_dates=restore_computer_dates,
+    changed_dates=file_computer_dates,
+    folder='computer',
+    filename=group + '.txt',
+    display_names = display_names_3,
+    display_dates = display_dates_3))
+    
+    Label(reset_buttons, width=31).pack(side=LEFT)
+    
+    undo_button_4 = Label(reset_buttons, text='Undo', bg='#f9f1d2', fg='#f78b6e', font=general_font, width=7, bd=4, relief='raised')
+    undo_button_4.pack(side=LEFT)
+    undo_button_4.bind("<Button-1>", lambda event: reset_list(event,
+    original_names=restore_whiteboard_names,
+    changed_names=file_whiteboard_names,
+    original_dates=restore_whiteboard_dates,
+    changed_dates=file_whiteboard_dates,
+    folder='whiteboard',
+    filename=group + '.txt',
+    display_names = display_names_4,
+    display_dates = display_dates_4))
 
-    footer_frame = Frame(window, pady=55)
+    footer_frame = Frame(window)
     footer_frame.pack(side=BOTTOM)
     buttons = Frame(footer_frame)
     buttons.pack()
@@ -228,12 +307,11 @@ def display_class_lists(event=None, class_index=0):
     filename=group + '.txt'))
     whiteboard_next_display = Label(next_name_display, textvariable=whiteboard_next_name, width=12, font=general_font, pady=10, fg='#f0386b', bd=4, relief='flat').pack(side=LEFT)
 
-
     all_update_statuses = [list_update_status, jasper_update_status, computer_update_status, whiteboard_update_status]
 
     window.bind("<Down>", next_name)
     window.bind("<Up>", last_name)
-
+    
     # -------------------------------------------------------------------------------------------------
 
     Label(window, width=3).pack(side=LEFT)
@@ -281,6 +359,8 @@ def display_class_lists(event=None, class_index=0):
         Label(next_person_1, textvariable=display_names_1[index], font=general_font, fg='#3066be').pack(side=LEFT)
         Label(next_person_1, width=5).pack(side=LEFT)
         Label(next_person_1, textvariable=display_dates_1[index], font=general_font, fg='#009973').pack(side=RIGHT)
+        
+    Label(list_frame_1, height=2).pack()
     
     # -------------------------------------------------------------------------------------------------
 
@@ -330,6 +410,8 @@ def display_class_lists(event=None, class_index=0):
         Label(next_person_2, width=5).pack(side=LEFT)
         Label(next_person_2, textvariable=display_dates_2[index], font=general_font, fg='#009973').pack(side=RIGHT)
     
+    Label(list_frame_2, height=2).pack()
+    
     # -------------------------------------------------------------------------------------------------
 
     Label(window, width=3).pack(side=LEFT)
@@ -377,6 +459,8 @@ def display_class_lists(event=None, class_index=0):
         Label(next_person_3, textvariable=display_names_3[index], font=general_font, fg='#3066be').pack(side=LEFT)
         Label(next_person_3, width=5).pack(side=LEFT)
         Label(next_person_3, textvariable=display_dates_3[index], font=general_font, fg='#009973').pack(side=RIGHT)
+    
+    Label(list_frame_3, height=2).pack()
     
     # -------------------------------------------------------------------------------------------------
 
@@ -426,6 +510,8 @@ def display_class_lists(event=None, class_index=0):
         Label(next_person_4, width=5).pack(side=LEFT)
         Label(next_person_4, textvariable=display_dates_4[index], font=general_font, fg='#009973').pack(side=RIGHT)
     
+    Label(list_frame_4, height=2).pack()
+    
     # -------------------------------------------------------------------------------------------------
 
     load_list('list', group + '.txt', display_names_1, display_dates_1, file_list_names, file_list_dates)
@@ -433,4 +519,14 @@ def display_class_lists(event=None, class_index=0):
     load_list('computer', group + '.txt', display_names_3, display_dates_3, file_computer_names, file_computer_dates)
     load_list('whiteboard', group + '.txt', display_names_4, display_dates_4, file_whiteboard_names, file_whiteboard_dates)
     
+    restore_list_names = duplicate_list(file_list_names)
+    restore_list_dates = duplicate_list(file_list_dates)
+    restore_jasper_names = duplicate_list(file_jasper_names)
+    restore_jasper_dates = duplicate_list(file_jasper_dates)
+    restore_computer_names = duplicate_list(file_computer_names)
+    restore_computer_dates = duplicate_list(file_computer_dates)
+    restore_whiteboard_names = duplicate_list(file_whiteboard_names)
+    restore_whiteboard_dates = duplicate_list(file_whiteboard_dates)
+    
     print_lists()
+    
