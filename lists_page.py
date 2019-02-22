@@ -5,7 +5,7 @@ import os
 
 def display_class_lists(event=None, class_index=0):
     
-    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'Not Done']
 
     def load_list(directory, filename, display_names, display_dates, text_file_names, text_file_dates):
         os.chdir('../job lists/' + directory)
@@ -20,7 +20,10 @@ def display_class_lists(event=None, class_index=0):
         for index in range(class_size.get()):
             display_names[index].set(text_file_names[index])
             date_elements = text_file_dates[index].split('-')
-            date = date_elements[2] + ' ' + months[int(date_elements[1])-1]
+            if (date_elements[1] == '13'):
+                date = months[int(date_elements[1])-1]
+            else:
+                date = date_elements[2] + ' ' + months[int(date_elements[1])-1]
             display_dates[index].set(date)
         os.chdir('../../jobs')
         
@@ -52,7 +55,7 @@ def display_class_lists(event=None, class_index=0):
             for index in range(len(file_names)):
                 display_names[index].set(file_names[index])
                 date_elements = file_dates[index].split('-')
-                display_dates[index].set(date_elements[2] + ' ' + months[int(date_elements[1])-1])
+                set_date_display(date_elements, display_dates, index)
             _index.set(0)
             os.chdir('../job lists/' + folder)         
             names_file = open(filename, 'w')
@@ -91,13 +94,19 @@ def display_class_lists(event=None, class_index=0):
         elif whiteboard_update_status.get() == 'update' and whiteboard_index.get() > 0:
             whiteboard_index.set(whiteboard_index.get()-1)
             whiteboard_next_name.set(file_whiteboard_names[whiteboard_index.get()])
+            
+    def set_date_display(date_elements, display_dates, index):
+        if (date_elements[1] == '13'):
+            display_dates[index].set(months[int(date_elements[1])-1])
+        else:
+            display_dates[index].set(date_elements[2] + ' ' + months[int(date_elements[1])-1])
     
     def reset_list(event=None, original_names=[], changed_names=[], original_dates=[], changed_dates=[], folder='', filename='', display_names=[], display_dates=[]):
         if not updating_list():            
             for index in range(len(original_names)):
                 display_names[index].set(original_names[index])
                 date_elements = original_dates[index].split('-')
-                display_dates[index].set(date_elements[2] + ' ' + months[int(date_elements[1])-1])
+                set_date_display(date_elements, display_dates, index)
             os.chdir('../job lists/' + folder)         
             names_file = open(filename, 'w')
             for index in range(len(original_names)):
@@ -133,10 +142,10 @@ def display_class_lists(event=None, class_index=0):
     window.geometry('1440x800+0+0')
     window.resizable(width=FALSE, height=FALSE)
 
-    class_sizes = [7, 4]
+    class_sizes = [7, 4, 4]
     class_size = IntVar()
     class_size.set(class_sizes[class_index])
-    classes = ['Monday_4', 'Thursday_4']
+    classes = ['Monday_4', 'Thursday_4', 'Thursday_5']
     
     group = classes[class_index]
 

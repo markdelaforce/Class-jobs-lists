@@ -20,9 +20,15 @@ button_1.bind("<Button-1>", lambda event: display_class_lists(event, class_index
 
 Label(button_bar, width=15).pack(side=LEFT)
 
-button_2 = Label(button_bar, text='Thursday 5.00', bg='#a69658', fg='#fff480', font=button_font, width=15, bd=4, relief='raised')
+button_2 = Label(button_bar, text='Thursday 4.00', bg='#a69658', fg='#fff480', font=button_font, width=15, bd=4, relief='raised')
 button_2.pack(side=LEFT)
 button_2.bind("<Button-1>", lambda event: display_class_lists(event, class_index=1))
+
+Label(button_bar, width=15).pack(side=LEFT)
+
+button_3 = Label(button_bar, text='Thursday 5.15', bg='#a69658', fg='#fff480', font=button_font, width=15, bd=4, relief='raised')
+button_3.pack(side=LEFT)
+button_3.bind("<Button-1>", lambda event: display_class_lists(event, class_index=2))
 
 options_page.mainloop()
 
