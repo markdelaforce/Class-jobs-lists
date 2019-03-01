@@ -142,10 +142,10 @@ def display_class_lists(event=None, class_index=0):
     window.geometry('1440x800+0+0')
     window.resizable(width=FALSE, height=FALSE)
 
-    class_sizes = [7, 4, 4]
+    class_sizes = [7, 3, 4, 4]
     class_size = IntVar()
     class_size.set(class_sizes[class_index])
-    classes = ['Monday_4', 'Thursday_4', 'Thursday_5']
+    classes = ['Monday_4', 'Wednesday_3', 'Thursday_4', 'Thursday_5']
     
     group = classes[class_index]
 
