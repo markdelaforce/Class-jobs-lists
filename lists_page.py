@@ -3,6 +3,12 @@ from tkinter import font
 import datetime
 import os
 
+LargeButtonBack = '#635380'
+smallButtonBack = '#a5668b'
+buttonText = '#fff480'
+labelColour = '#fcf8e8'
+labelText = '#49919c'
+
 def display_class_lists(event=None, class_index=0):
     
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'Not Done']
@@ -153,14 +159,14 @@ def display_class_lists(event=None, class_index=0):
     title_font = font.Font(family='comic sans ms', size=28, weight='bold')
     general_font = font.Font(family='comic sans ms', size=22, weight='bold')
 
-    header = Label(window, text="Class Jobs", bg='#ffd166', fg='#ef476f', width='40', height='2', font=header_font).pack()
+    header = Label(window, text="Class Jobs", bg=smallButtonBack, fg='#97c7ce', width='40', height='2', font=header_font).pack()
     Label(window, height=7).pack()
     
     Label(window, height=2).pack(side=BOTTOM)
     reset_buttons = Frame(window)
     reset_buttons.pack(side=BOTTOM)
     
-    undo_button_1 = Label(reset_buttons, text='Undo', bg='#f9f1d2', fg='#f78b6e', font=general_font, width=7, bd=4, relief='raised')
+    undo_button_1 = Label(reset_buttons, text='Undo', bg=smallButtonBack, fg=buttonText, font=general_font, width=7, bd=4, relief='raised')
     undo_button_1.pack(side=LEFT)  
     undo_button_1.bind("<Button-1>", lambda event: reset_list(event,
     original_names=restore_list_names,
@@ -174,7 +180,7 @@ def display_class_lists(event=None, class_index=0):
     
     Label(reset_buttons, width=31).pack(side=LEFT)
     
-    undo_button_2 = Label(reset_buttons, text='Undo', bg='#f9f1d2', fg='#f78b6e', font=general_font, width=7, bd=4, relief='raised')
+    undo_button_2 = Label(reset_buttons, text='Undo', bg=smallButtonBack, fg=buttonText, font=general_font, width=7, bd=4, relief='raised')
     undo_button_2.pack(side=LEFT)
     undo_button_2.bind("<Button-1>", lambda event: reset_list(event,
     original_names=restore_jasper_names,
@@ -188,7 +194,7 @@ def display_class_lists(event=None, class_index=0):
     
     Label(reset_buttons, width=31).pack(side=LEFT)
     
-    undo_button_3 = Label(reset_buttons, text='Undo', bg='#f9f1d2', fg='#f78b6e', font=general_font, width=7, bd=4, relief='raised')
+    undo_button_3 = Label(reset_buttons, text='Undo', bg=smallButtonBack, fg=buttonText, font=general_font, width=7, bd=4, relief='raised')
     undo_button_3.pack(side=LEFT)
     undo_button_3.bind("<Button-1>", lambda event: reset_list(event,
     original_names=restore_computer_names,
@@ -202,7 +208,7 @@ def display_class_lists(event=None, class_index=0):
     
     Label(reset_buttons, width=31).pack(side=LEFT)
     
-    undo_button_4 = Label(reset_buttons, text='Undo', bg='#f9f1d2', fg='#f78b6e', font=general_font, width=7, bd=4, relief='raised')
+    undo_button_4 = Label(reset_buttons, text='Undo', bg=smallButtonBack, fg=buttonText, font=general_font, width=7, bd=4, relief='raised')
     undo_button_4.pack(side=LEFT)
     undo_button_4.bind("<Button-1>", lambda event: reset_list(event,
     original_names=restore_whiteboard_names,
@@ -236,7 +242,7 @@ def display_class_lists(event=None, class_index=0):
     list_next_name = StringVar()
     list_index = IntVar()
     list_index.set(0)
-    list_button = Label(buttons, textvariable=button_1_text, font=general_font, bg='#a69658', fg='#fff480', width=12, bd=4, relief='raised')
+    list_button = Label(buttons, textvariable=button_1_text, font=general_font, bg=LargeButtonBack, fg=buttonText, width=12, bd=4, relief='raised')
     list_button.pack(side=LEFT)
     list_button.bind("<Button-1>", lambda event: choose_next_person(event,
     update_status=list_update_status,
@@ -258,7 +264,7 @@ def display_class_lists(event=None, class_index=0):
     jasper_next_name = StringVar()
     jasper_index = IntVar()
     jasper_index.set(0)
-    jasper_button = Label(buttons, textvariable=button_2_text, font=general_font, bg='#a69658', fg='#fff480', width=12, bd=4, relief='raised')
+    jasper_button = Label(buttons, textvariable=button_2_text, font=general_font, bg=LargeButtonBack, fg=buttonText, width=12, bd=4, relief='raised')
     jasper_button.pack(side=LEFT)
     jasper_button.bind("<Button-1>", lambda event: choose_next_person(event,
     update_status=jasper_update_status,
@@ -280,7 +286,7 @@ def display_class_lists(event=None, class_index=0):
     computer_next_name = StringVar()
     computer_index = IntVar()
     computer_index.set(0)
-    computer_button = Label(buttons, textvariable=button_3_text, font=general_font, bg='#a69658', fg='#fff480', width=12, bd=4, relief='raised')
+    computer_button = Label(buttons, textvariable=button_3_text, font=general_font, bg=LargeButtonBack, fg=buttonText, width=12, bd=4, relief='raised')
     computer_button.pack(side=LEFT)
     computer_button.bind("<Button-1>", lambda event: choose_next_person(event,
     update_status=computer_update_status,
@@ -302,7 +308,7 @@ def display_class_lists(event=None, class_index=0):
     whiteboard_next_name = StringVar()
     whiteboard_index = IntVar()
     whiteboard_index.set(0)
-    whiteboard_button = Label(buttons, textvariable=button_4_text, font=general_font, bg='#a69658', fg='#fff480', width=12, bd=4, relief='raised')
+    whiteboard_button = Label(buttons, textvariable=button_4_text, font=general_font, bg=LargeButtonBack, fg=buttonText, width=12, bd=4, relief='raised')
     whiteboard_button.pack(side=LEFT)
     whiteboard_button.bind("<Button-1>", lambda event: choose_next_person(event,
     update_status=whiteboard_update_status,
@@ -350,7 +356,7 @@ def display_class_lists(event=None, class_index=0):
     list_frame_1 = Frame(window)
     list_frame_1.pack(side=LEFT)
 
-    Label(list_frame_1, text='Names List', font=title_font, fg='#f46036', pady=5, padx=5, width=18, bg='#f9f1d2').pack(side=TOP)
+    Label(list_frame_1, text='Names List', font=title_font, fg=labelText, pady=5, padx=5, width=18, bg=labelColour).pack(side=TOP)
 
     person_1_1 = Frame(list_frame_1)
     person_2_1 = Frame(list_frame_1)
@@ -400,7 +406,7 @@ def display_class_lists(event=None, class_index=0):
     list_frame_2 = Frame(window)
     list_frame_2.pack(side=LEFT)
 
-    Label(list_frame_2, text='Jasper', font=title_font, fg='#f46036', pady=5, padx=5, width=18, bg='#f9f1d2').pack(side=TOP)
+    Label(list_frame_2, text='Jasper', font=title_font, fg=labelText, pady=5, padx=5, width=18, bg=labelColour).pack(side=TOP)
 
     person_1_2 = Frame(list_frame_2)
     person_2_2 = Frame(list_frame_2)
@@ -450,7 +456,7 @@ def display_class_lists(event=None, class_index=0):
     list_frame_3 = Frame(window)
     list_frame_3.pack(side=LEFT)
 
-    Label(list_frame_3, text='Computer', font=title_font, fg='#f46036', pady=5, padx=5, width=18, bg='#f9f1d2').pack(side=TOP)
+    Label(list_frame_3, text='Computer', font=title_font, fg=labelText, pady=5, padx=5, width=18, bg=labelColour).pack(side=TOP)
 
     person_1_3 = Frame(list_frame_3)
     person_2_3 = Frame(list_frame_3)
@@ -500,7 +506,7 @@ def display_class_lists(event=None, class_index=0):
     list_frame_4 = Frame(window)
     list_frame_4.pack(side=LEFT)
 
-    Label(list_frame_4, text='Whiteboard', font=title_font, fg='#f46036', pady=5, padx=5, width=18, bg='#f9f1d2').pack(side=TOP)
+    Label(list_frame_4, text='Whiteboard', font=title_font, fg=labelText, pady=5, padx=5, width=18, bg=labelColour).pack(side=TOP)
 
     person_1_4 = Frame(list_frame_4)
     person_2_4 = Frame(list_frame_4)
