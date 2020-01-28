@@ -147,17 +147,16 @@ def display_class_lists(event=None, class_index=0):
     window.title("Class jobs")
     window.geometry('1440x800+0+0')
     window.resizable(width=FALSE, height=FALSE)
-
-    class_sizes = [7, 3, 4, 4]
-    class_size = IntVar()
-    class_size.set(class_sizes[class_index])
-    classes = ['Monday_4', 'Wednesday_3', 'Thursday_4', 'Thursday_5']
     
-    group = classes[class_index]
-
     header_font = font.Font(family='comic sans ms', size=60, weight='bold')
     title_font = font.Font(family='comic sans ms', size=28, weight='bold')
     general_font = font.Font(family='comic sans ms', size=22, weight='bold')
+
+    classes = ['mon 4.15', 'mon 5.30', 'tues 4.00', 'tues 5.15', 'weds 5.00', 'weds 6.15', 'thurs 5.30', 'thurs 6.30', 'fri 4.15']
+    class_sizes = [2, 3, 3, 4, 3, 5, 4, 3, 7]
+    class_size = IntVar()
+    class_size.set(class_sizes[class_index])
+    group = classes[class_index]
 
     header = Label(window, text="Class Jobs", bg=smallButtonBack, fg='#97c7ce', width='40', height='2', font=header_font).pack()
     Label(window, height=7).pack()
