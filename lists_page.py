@@ -12,25 +12,27 @@ labelText = '#49919c'
 def display_class_lists(event=None, class_index=0):
     
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'Not Done']
+    files = ['list', 'jasper', 'computer', 'whiteboard']
 
-    def load_list(directory, filename, display_names, display_dates, text_file_names, text_file_dates):
-        os.chdir('../job lists/' + directory)
-        open_file = open(filename, 'r')
-        next_line = open_file.readline()
-        for child in range(class_size.get()):
-            data = next_line.strip().split(',')
-            text_file_names.append(data[0])
-            text_file_dates.append(data[1])
+    def load_lists(group, display_names, display_dates, file_names, file_dates):
+        os.chdir('../job lists/' + group)
+        for i in range(4):
+            open_file = open(files[i] + '.txt', 'r')
             next_line = open_file.readline()
-        open_file.close()
-        for index in range(class_size.get()):
-            display_names[index].set(text_file_names[index])
-            date_elements = text_file_dates[index].split('-')
-            if (date_elements[1] == '13'):
-                date = months[int(date_elements[1])-1]
-            else:
-                date = date_elements[2] + ' ' + months[int(date_elements[1])-1]
-            display_dates[index].set(date)
+            for child in range(class_size.get()):
+                data = next_line.strip().split(',')
+                file_names[i].append(data[0])
+                file_dates[i].append(data[1])
+                next_line = open_file.readline()
+            open_file.close()
+            for index in range(class_size.get()):
+                display_names[i][index].set(file_names[i][index])
+                date_elements = file_dates[i][index].split('-')
+                if (date_elements[1] == '13'):
+                    date = months[int(date_elements[1])-1]
+                else:
+                    date = date_elements[2] + ' ' + months[int(date_elements[1])-1]
+                display_dates[i][index].set(date)
         os.chdir('../../jobs')
         
     def updating_list():
@@ -43,7 +45,7 @@ def display_class_lists(event=None, class_index=0):
         elif whiteboard_update_status.get() == 'update':
             return True
         return False
-    
+        
     def choose_next_person(event=None, update_status='', next_name='', file_names=[], file_dates=[], _index=0, display_names=[], display_dates=[], folder='', filename=''):
         if not updating_list():
             update_status.set('update')
@@ -62,9 +64,8 @@ def display_class_lists(event=None, class_index=0):
                 display_names[index].set(file_names[index])
                 date_elements = file_dates[index].split('-')
                 set_date_display(date_elements, display_dates, index)
-            _index.set(0)
-            os.chdir('../job lists/' + folder)         
-            names_file = open(filename, 'w')
+            os.chdir('../job lists/' + group)
+            names_file = open(files[_index.get()] + '.txt', 'w')
             for index in range(len(file_names)):
                 names_file.write(str(file_names[index]) + ',' + str(file_dates[index]) + '\n')
             names_file.close()
@@ -72,7 +73,8 @@ def display_class_lists(event=None, class_index=0):
             update_status.set('initial')
             for index in range(4):
                 select_buttons_text[index].set('choose next')
-        
+            _index.set(0)
+            
     def next_name(event):
         if list_update_status.get() == 'update' and list_index.get() < class_size.get()-1:
             list_index.set(list_index.get()+1)
@@ -108,12 +110,12 @@ def display_class_lists(event=None, class_index=0):
             display_dates[index].set(date_elements[2] + ' ' + months[int(date_elements[1])-1])
     
     def reset_list(event=None, original_names=[], changed_names=[], original_dates=[], changed_dates=[], folder='', filename='', display_names=[], display_dates=[]):
-        if not updating_list():            
+        if not updating_list():
             for index in range(len(original_names)):
                 display_names[index].set(original_names[index])
                 date_elements = original_dates[index].split('-')
                 set_date_display(date_elements, display_dates, index)
-            os.chdir('../job lists/' + folder)         
+            os.chdir('../job lists/' + group)
             names_file = open(filename, 'w')
             for index in range(len(original_names)):
                 names_file.write(str(original_names[index]) + ',' + str(original_dates[index]) + '\n')
@@ -127,7 +129,7 @@ def display_class_lists(event=None, class_index=0):
         for item in range(len(list_to_duplicate)):
             new_list.append(list_to_duplicate[item])
         return new_list
-    
+        
     def print_lists():
         file_names = ['names list', 'jasper', 'computer', 'whiteboard']
         all_names = [file_list_names, file_jasper_names, file_computer_names, file_whiteboard_names]
@@ -142,7 +144,7 @@ def display_class_lists(event=None, class_index=0):
             print()
         print('------------------------------\n------------------------------\n')
         
-    def undoButton(index):
+    def undoButton(index, padding):
         button = Label(undo_buttons, text='Undo', bg=smallButtonBack, fg=buttonText, font=general_font, width=7, bd=4, relief='raised')
         button.pack(side=LEFT)  
         button.bind("<Button-1>", lambda event: reset_list(event,
@@ -150,10 +152,12 @@ def display_class_lists(event=None, class_index=0):
         changed_names=fileNames[index],
         original_dates=restoreDates[index],
         changed_dates=fileDates[index],
-        folder=folders[index],
-        filename=group + '.txt',
+        folder=group,
+        filename=files[index]+ '.txt',
         display_names=displayNames[index],
         display_dates=displayDates[index]))
+        if padding == 'padding':
+            Label(undo_buttons, width=31).pack(side=LEFT)
         return button
         
     def selectButton(index):
@@ -171,8 +175,8 @@ def display_class_lists(event=None, class_index=0):
         filename=group + '.txt'))
         return button
         
-    def name_display(padding):
-        display = Label(next_name_display, textvariable=list_next_name, width=12, font=general_font, pady=10, fg='#f0386b', bd=4, relief='flat').pack(side=LEFT)
+    def name_display(index, padding):
+        display = Label(next_name_display, textvariable=nextNames[index], width=12, font=general_font, pady=10, fg='#f0386b', bd=4, relief='flat').pack(side=LEFT)
         if padding == 'padding':
             Label(buttons, width=23).pack(side=LEFT)
             Label(next_name_display, width=23).pack(side=LEFT)
@@ -218,13 +222,10 @@ def display_class_lists(event=None, class_index=0):
     undo_buttons = Frame(window)
     undo_buttons.pack(side=BOTTOM)
     
-    undo_button_1 = undoButton(0)
-    Label(undo_buttons, width=31).pack(side=LEFT)
-    undo_button_2 = undoButton(1)
-    Label(undo_buttons, width=31).pack(side=LEFT)
-    undo_button_3 = undoButton(2)
-    Label(undo_buttons, width=31).pack(side=LEFT)    
-    undo_button_4 = undoButton(3)
+    undo_button_1 = undoButton(0, 'padding')
+    undo_button_2 = undoButton(1, 'padding')
+    undo_button_3 = undoButton(2, 'padding')
+    undo_button_4 = undoButton(3, 'no-padding')
 
     footer_frame = Frame(window)
     footer_frame.pack(side=BOTTOM)
@@ -262,22 +263,23 @@ def display_class_lists(event=None, class_index=0):
         index.set(0)
         
     list_button = selectButton(0)
-    list_next_display = name_display('padding')
+    list_next_display = name_display(0, 'padding')
 
     jasper_button = selectButton(1)
-    jasper_next_display = name_display('padding')
+    jasper_next_display = name_display(1, 'padding')
 
     computer_button = selectButton(2)
-    computer_next_display = name_display('padding')
+    computer_next_display = name_display(2, 'padding')
 
     whiteboard_button = selectButton(3)
-    whiteboard_next_display = name_display('no-padding')
+    whiteboard_next_display = name_display(3, 'no-padding')
 
     window.bind("<Down>", next_name)
     window.bind("<Up>", last_name)
     
-    # -------------------------------------------------------------------------------------------------
-
+    display_names = []
+    display_dates = []
+    
     Label(window, width=3).pack(side=LEFT)
     list_holder_1 = list_holder('Names List')
     
@@ -290,9 +292,10 @@ def display_class_lists(event=None, class_index=0):
         
     Label(list_holder_1, height=2).pack()
     
-    # -------------------------------------------------------------------------------------------------
-
-    Label(window, width=3).pack(side=LEFT)    
+    display_names.append(display_names_1)
+    display_dates.append(display_dates_1)
+    
+    Label(window, width=3).pack(side=LEFT)
     list_holder_2 = list_holder('Jasper')
 
     display_names_2 = []
@@ -304,8 +307,9 @@ def display_class_lists(event=None, class_index=0):
     
     Label(list_holder_2, height=2).pack()
     
-    # -------------------------------------------------------------------------------------------------
-
+    display_names.append(display_names_2)
+    display_dates.append(display_dates_2)
+    
     Label(window, width=3).pack(side=LEFT)
     list_holder_3 = list_holder('Computer')
     
@@ -318,8 +322,9 @@ def display_class_lists(event=None, class_index=0):
     
     Label(list_holder_3, height=2).pack()
     
-    # -------------------------------------------------------------------------------------------------
-
+    display_names.append(display_names_3)
+    display_dates.append(display_dates_3)
+    
     Label(window, width=3).pack(side=LEFT)
     list_holder_4 = list_holder('Whiteboard')
     
@@ -332,8 +337,9 @@ def display_class_lists(event=None, class_index=0):
     
     Label(list_holder_4, height=2).pack()
     
-    # -------------------------------------------------------------------------------------------------
-    
+    display_names.append(display_names_4)
+    display_dates.append(display_dates_4)
+        
     file_list_names = []
     file_list_dates = []
     file_jasper_names = []
@@ -342,11 +348,11 @@ def display_class_lists(event=None, class_index=0):
     file_computer_dates = []
     file_whiteboard_names = []
     file_whiteboard_dates = []
-
-    load_list('list', group + '.txt', display_names_1, display_dates_1, file_list_names, file_list_dates)
-    load_list('jasper', group + '.txt', display_names_2, display_dates_2, file_jasper_names, file_jasper_dates)
-    load_list('computer', group + '.txt', display_names_3, display_dates_3, file_computer_names, file_computer_dates)
-    load_list('whiteboard', group + '.txt', display_names_4, display_dates_4, file_whiteboard_names, file_whiteboard_dates)
+    
+    file_names = [file_list_names, file_jasper_names, file_computer_names, file_whiteboard_names]
+    file_dates = [file_list_dates, file_jasper_dates, file_computer_dates, file_whiteboard_dates]
+    
+    load_lists(group, display_names, display_dates, file_names, file_dates)
     
     restore_list_names = duplicate(file_list_names)
     restore_list_dates = duplicate(file_list_dates)
@@ -366,4 +372,3 @@ def display_class_lists(event=None, class_index=0):
     displayDates =  [display_dates_1,    display_dates_2,      display_dates_3,        display_dates_4]
     
     print_lists()
-    
