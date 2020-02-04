@@ -14,7 +14,7 @@ def display_class_lists(event=None, class_index=0):
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'Not Done']
     files = ['list', 'jasper', 'computer', 'whiteboard']
 
-    def load_lists(group, display_names, display_dates, file_names, file_dates):
+    def load_lists(file_names, file_dates, display_names, display_dates):
         os.chdir('../job lists/' + group)
         for i in range(4):
             open_file = open(files[i] + '.txt', 'r')
@@ -46,7 +46,7 @@ def display_class_lists(event=None, class_index=0):
             return True
         return False
         
-    def choose_next_person(event=None, update_status='', next_name='', file_names=[], file_dates=[], _index=0, display_names=[], display_dates=[], folder='', filename=''):
+    def choose_next_person(event=None, _index=0, update_status='', next_name='', file_names=[], file_dates=[], display_names=[], display_dates=[], filename=''):
         if not updating_list():
             update_status.set('update')
             for index in range(4):
@@ -65,7 +65,7 @@ def display_class_lists(event=None, class_index=0):
                 date_elements = file_dates[index].split('-')
                 set_date_display(date_elements, display_dates, index)
             os.chdir('../job lists/' + group)
-            names_file = open(files[_index.get()] + '.txt', 'w')
+            names_file = open(filename, 'w')
             for index in range(len(file_names)):
                 names_file.write(str(file_names[index]) + ',' + str(file_dates[index]) + '\n')
             names_file.close()
@@ -109,7 +109,7 @@ def display_class_lists(event=None, class_index=0):
         else:
             display_dates[index].set(date_elements[2] + ' ' + months[int(date_elements[1])-1])
     
-    def reset_list(event=None, original_names=[], changed_names=[], original_dates=[], changed_dates=[], folder='', filename='', display_names=[], display_dates=[]):
+    def reset_list(event=None, original_names=[], changed_names=[], original_dates=[], changed_dates=[], filename='', display_names=[], display_dates=[]):
         if not updating_list():
             for index in range(len(original_names)):
                 display_names[index].set(original_names[index])
@@ -117,6 +117,7 @@ def display_class_lists(event=None, class_index=0):
                 set_date_display(date_elements, display_dates, index)
             os.chdir('../job lists/' + group)
             names_file = open(filename, 'w')
+            print('Opening: ' + filename)
             for index in range(len(original_names)):
                 names_file.write(str(original_names[index]) + ',' + str(original_dates[index]) + '\n')
                 changed_names[index] = original_names[index]
@@ -152,7 +153,6 @@ def display_class_lists(event=None, class_index=0):
         changed_names=fileNames[index],
         original_dates=restoreDates[index],
         changed_dates=fileDates[index],
-        folder=group,
         filename=files[index]+ '.txt',
         display_names=displayNames[index],
         display_dates=displayDates[index]))
@@ -164,15 +164,14 @@ def display_class_lists(event=None, class_index=0):
         button = Label(buttons, textvariable=select_buttons_text[index], font=general_font, bg=LargeButtonBack, fg=buttonText, width=12, bd=4, relief='raised')
         button.pack(side=LEFT)
         button.bind("<Button-1>", lambda event: choose_next_person(event,
+        _index=_indexes[index],
         update_status=updateStatuses[index],
         next_name=nextNames[index],
         file_names=fileNames[index],
         file_dates=fileDates[index],
-        _index=_indexes[index],
         display_names=displayNames[index],
-        display_dates=displayDates[index],
-        folder=folders[index],
-        filename=group + '.txt'))
+        display_dates=displayDates[index],        
+        filename=files[index] + '.txt'))
         return button
         
     def name_display(index, padding):
@@ -352,7 +351,7 @@ def display_class_lists(event=None, class_index=0):
     file_names = [file_list_names, file_jasper_names, file_computer_names, file_whiteboard_names]
     file_dates = [file_list_dates, file_jasper_dates, file_computer_dates, file_whiteboard_dates]
     
-    load_lists(group, display_names, display_dates, file_names, file_dates)
+    load_lists(file_names, file_dates, display_names, display_dates)
     
     restore_list_names = duplicate(file_list_names)
     restore_list_dates = duplicate(file_list_dates)
@@ -367,7 +366,6 @@ def display_class_lists(event=None, class_index=0):
     fileNames =     [file_list_names,    file_jasper_names,    file_computer_names,    file_whiteboard_names]
     restoreDates =  [restore_list_dates, restore_jasper_dates, restore_computer_dates, restore_whiteboard_dates]
     fileDates =     [file_list_dates,    file_jasper_dates,    file_computer_dates,    file_whiteboard_dates]
-    folders =       ['list',             'jasper',             'computer',             'whiteboard']
     displayNames =  [display_names_1,    display_names_2,      display_names_3,        display_names_4]
     displayDates =  [display_dates_1,    display_dates_2,      display_dates_3,        display_dates_4]
     
