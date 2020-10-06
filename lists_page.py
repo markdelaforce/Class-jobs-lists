@@ -15,7 +15,7 @@ def display_class_lists(event=None, class_index=0):
     files = ['list', 'jasper', 'computer', 'whiteboard']
 
     def load_lists(file_names, file_dates, display_names, display_dates):
-        os.chdir('../job lists/' + group)
+        os.chdir('job lists/' + group)
         for i in range(4):
             open_file = open(files[i] + '.txt', 'r')
             next_line = open_file.readline()
@@ -33,7 +33,7 @@ def display_class_lists(event=None, class_index=0):
                 else:
                     date = date_elements[2] + ' ' + months[int(date_elements[1])-1]
                 display_dates[i][index].set(date)
-        os.chdir('../../jobs')
+        os.chdir('..')
         
     def updating_list():
         if list_update_status.get() == 'update':
@@ -64,12 +64,12 @@ def display_class_lists(event=None, class_index=0):
                 display_names[index].set(file_names[index])
                 date_elements = file_dates[index].split('-')
                 set_date_display(date_elements, display_dates, index)
-            os.chdir('../job lists/' + group)
+            os.chdir('job lists/' + group)
             names_file = open(filename, 'w')
             for index in range(len(file_names)):
                 names_file.write(str(file_names[index]) + ',' + str(file_dates[index]) + '\n')
             names_file.close()
-            os.chdir('../../jobs')
+            os.chdir('..')
             update_status.set('initial')
             for index in range(4):
                 select_buttons_text[index].set('choose next')
@@ -115,7 +115,7 @@ def display_class_lists(event=None, class_index=0):
                 display_names[index].set(original_names[index])
                 date_elements = original_dates[index].split('-')
                 set_date_display(date_elements, display_dates, index)
-            os.chdir('../job lists/' + group)
+            os.chdir('job lists/' + group)
             names_file = open(filename, 'w')
             print('Opening: ' + filename)
             for index in range(len(original_names)):
@@ -123,7 +123,7 @@ def display_class_lists(event=None, class_index=0):
                 changed_names[index] = original_names[index]
                 changed_dates[index] = original_dates[index]
             names_file.close()
-            os.chdir('../../jobs')
+            os.chdir('..')
             
     def duplicate(list_to_duplicate):
         new_list = []
@@ -209,7 +209,7 @@ def display_class_lists(event=None, class_index=0):
     general_font = font.Font(family='comic sans ms', size=22, weight='bold')
 
     classes = ['mon 4.15', 'mon 5.30', 'tues 4.00', 'tues 5.15', 'weds 5.00', 'weds 6.15', 'thurs 5.30', 'thurs 6.30', 'fri 4.15']
-    class_sizes = [2, 3, 3, 4, 3, 5, 4, 3, 7]
+    class_sizes = [2, 3, 3, 4, 4, 4, 4, 3, 7]
     class_size = IntVar()
     class_size.set(class_sizes[class_index])
     group = classes[class_index]
